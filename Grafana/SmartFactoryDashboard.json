@@ -5,8 +5,8 @@
     "name": "adf2mgk",
     "namespace": "default",
     "uid": "1ab3ee60-8447-4706-96a5-9915c32d5562",
-    "resourceVersion": "1784147011911003",
-    "generation": 8,
+    "resourceVersion": "1784491987250018",
+    "generation": 15,
     "creationTimestamp": "2026-07-03T20:42:03Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "1475298503073792"
@@ -16,7 +16,7 @@
       "grafana.app/folder": "",
       "grafana.app/saved-from-ui": "Grafana v13.1.0 (b309c9bb3b)",
       "grafana.app/updatedBy": "user:efq7gjqnodhxce",
-      "grafana.app/updatedTimestamp": "2026-07-15T20:23:31Z"
+      "grafana.app/updatedTimestamp": "2026-07-19T20:13:07Z"
     }
   },
   "spec": {
@@ -42,15 +42,15 @@
       }
     ],
     "cursorSync": "Off",
-    "description": "Température",
+    "description": "Suivi temps reel de la machine : etat, mode, temperature, humidite, production et energie",
     "editable": true,
     "elements": {
       "panel-1": {
         "kind": "Panel",
         "spec": {
           "id": 1,
-          "title": "Température (°C)",
-          "description": "",
+          "title": "📈 Courbe temperature",
+          "description": "Historique de la temperature (°C)",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -67,7 +67,7 @@
                         "name": "bfs7s7vgwlc00d"
                       },
                       "spec": {
-                        "query": "from(bucket: \"telemetry\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"temperature\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")\r\n\r\n  "
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temperature\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")"
                       }
                     },
                     "refId": "A",
@@ -90,7 +90,11 @@
                   "multiLane": false
                 },
                 "legend": {
-                  "calcs": [],
+                  "calcs": [
+                    "lastNotNull",
+                    "max",
+                    "min"
+                  ],
                   "displayMode": "list",
                   "enableFacetedFilter": false,
                   "overflow": "ellipsis",
@@ -99,12 +103,13 @@
                 },
                 "tooltip": {
                   "hideZeros": false,
-                  "mode": "single",
+                  "mode": "multi",
                   "sort": "none"
                 }
               },
               "fieldConfig": {
                 "defaults": {
+                  "unit": "celsius",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -113,19 +118,11 @@
                         "color": "green"
                       },
                       {
-                        "value": 0,
-                        "color": "#6ED0E0"
-                      },
-                      {
-                        "value": 20,
-                        "color": "super-light-purple"
-                      },
-                      {
-                        "value": 35,
+                        "value": 30,
                         "color": "#EAB839"
                       },
                       {
-                        "value": 45,
+                        "value": 40,
                         "color": "red"
                       }
                     ]
@@ -142,20 +139,20 @@
                     "axisPlacement": "auto",
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
-                    "drawStyle": "bars",
-                    "fillOpacity": 70,
-                    "gradientMode": "scheme",
+                    "drawStyle": "line",
+                    "fillOpacity": 20,
+                    "gradientMode": "opacity",
                     "hideFrom": {
                       "legend": false,
                       "tooltip": false,
                       "viz": false
                     },
                     "insertNulls": false,
-                    "lineInterpolation": "linear",
+                    "lineInterpolation": "smooth",
                     "lineStyle": {
                       "fill": "solid"
                     },
-                    "lineWidth": 1,
+                    "lineWidth": 2,
                     "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
@@ -168,7 +165,7 @@
                       "mode": "none"
                     },
                     "thresholdsStyle": {
-                      "mode": "off"
+                      "mode": "area"
                     }
                   }
                 },
@@ -182,8 +179,8 @@
         "kind": "Panel",
         "spec": {
           "id": 2,
-          "title": "Humidité (%)",
-          "description": "",
+          "title": "📉 Courbe humidite",
+          "description": "Historique de l'humidite (%)",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -200,7 +197,7 @@
                         "name": "bfs7s7vgwlc00d"
                       },
                       "spec": {
-                        "query": "from(bucket: \"telemetry\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"humidity\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")"
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"humidity\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")"
                       }
                     },
                     "refId": "A",
@@ -223,7 +220,11 @@
                   "multiLane": false
                 },
                 "legend": {
-                  "calcs": [],
+                  "calcs": [
+                    "lastNotNull",
+                    "max",
+                    "min"
+                  ],
                   "displayMode": "list",
                   "enableFacetedFilter": false,
                   "overflow": "ellipsis",
@@ -232,26 +233,27 @@
                 },
                 "tooltip": {
                   "hideZeros": false,
-                  "mode": "single",
+                  "mode": "multi",
                   "sort": "none"
                 }
               },
               "fieldConfig": {
                 "defaults": {
+                  "unit": "percent",
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
                       {
                         "value": 0,
+                        "color": "#6ED0E0"
+                      },
+                      {
+                        "value": 30,
                         "color": "green"
                       },
                       {
-                        "value": 20,
-                        "color": "dark-blue"
-                      },
-                      {
-                        "value": 50,
-                        "color": "light-yellow"
+                        "value": 70,
+                        "color": "#EAB839"
                       }
                     ]
                   },
@@ -267,20 +269,20 @@
                     "axisPlacement": "auto",
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
-                    "drawStyle": "bars",
-                    "fillOpacity": 70,
-                    "gradientMode": "scheme",
+                    "drawStyle": "line",
+                    "fillOpacity": 20,
+                    "gradientMode": "opacity",
                     "hideFrom": {
                       "legend": false,
                       "tooltip": false,
                       "viz": false
                     },
                     "insertNulls": false,
-                    "lineInterpolation": "linear",
+                    "lineInterpolation": "smooth",
                     "lineStyle": {
                       "fill": "solid"
                     },
-                    "lineWidth": 1,
+                    "lineWidth": 2,
                     "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
@@ -293,8 +295,621 @@
                       "mode": "none"
                     },
                     "thresholdsStyle": {
-                      "mode": "off"
+                      "mode": "area"
                     }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-3": {
+        "kind": "Panel",
+        "spec": {
+          "id": 3,
+          "title": "🏭 Machine",
+          "description": "Nom de la machine",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bfs7s7vgwlc00d"
+                      },
+                      "spec": {
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temperature\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> last()\n  |> map(fn: (r) => ({_time: r._time, _value: r.machine}))\n  |> yield(name: \"last\")"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "/^Value$/",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "purple"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed",
+                    "fixedColor": "purple"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-4": {
+        "kind": "Panel",
+        "spec": {
+          "id": 4,
+          "title": "⚙️ Etat Machine",
+          "description": "Etat courant (RUN / STOP / DEFAUT)",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bfs7s7vgwlc00d"
+                      },
+                      "spec": {
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temperature\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> last()\n  |> map(fn: (r) => ({_time: r._time, _value: r.status}))\n  |> yield(name: \"last\")"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "/^Value$/",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "mappings": [
+                    {
+                      "type": "value",
+                      "options": {
+                        "ARRET": {
+                          "text": "⚪ ARRET",
+                          "color": "gray",
+                          "index": 3
+                        },
+                        "DEFAUT": {
+                          "text": "🟠 DEFAUT",
+                          "color": "orange",
+                          "index": 2
+                        },
+                        "RUN": {
+                          "text": "🟢 RUN",
+                          "color": "green",
+                          "index": 0
+                        },
+                        "STOP": {
+                          "text": "🔴 STOP",
+                          "color": "red",
+                          "index": 1
+                        }
+                      }
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-5": {
+        "kind": "Panel",
+        "spec": {
+          "id": 5,
+          "title": "🕹️ Mode",
+          "description": "Mode de fonctionnement (AUTO / MANUEL)",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bfs7s7vgwlc00d"
+                      },
+                      "spec": {
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temperature\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> last()\n  |> map(fn: (r) => ({_time: r._time, _value: r.mode}))\n  |> yield(name: \"last\")"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "/^Value$/",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "mappings": [
+                    {
+                      "type": "value",
+                      "options": {
+                        "AUTO": {
+                          "text": "⚙️ AUTO",
+                          "color": "blue",
+                          "index": 0
+                        },
+                        "MANUEL": {
+                          "text": "✋ MANUEL",
+                          "color": "orange",
+                          "index": 1
+                        }
+                      }
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "blue"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-6": {
+        "kind": "Panel",
+        "spec": {
+          "id": 6,
+          "title": "🌡️ Temperature actuelle",
+          "description": "Derniere valeur mesuree",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bfs7s7vgwlc00d"
+                      },
+                      "spec": {
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"temperature\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "celsius",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 30,
+                        "color": "#EAB839"
+                      },
+                      {
+                        "value": 40,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-7": {
+        "kind": "Panel",
+        "spec": {
+          "id": 7,
+          "title": "💧 Humidite actuelle",
+          "description": "Derniere valeur mesuree",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bfs7s7vgwlc00d"
+                      },
+                      "spec": {
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"humidity\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "percent",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "#6ED0E0"
+                      },
+                      {
+                        "value": 30,
+                        "color": "green"
+                      },
+                      {
+                        "value": 70,
+                        "color": "#EAB839"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-8": {
+        "kind": "Panel",
+        "spec": {
+          "id": 8,
+          "title": "📦 Production totale",
+          "description": "Cumul depuis le debut de la periode affichee",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bfs7s7vgwlc00d"
+                      },
+                      "spec": {
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"production\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "blue"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed",
+                    "fixedColor": "blue"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-9": {
+        "kind": "Panel",
+        "spec": {
+          "id": 9,
+          "title": "⚡ Consommation energie",
+          "description": "Derniere valeur mesuree",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bfs7s7vgwlc00d"
+                      },
+                      "spec": {
+                        "query": "from(bucket: \"telemetry\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"telemetry\")\n  |> filter(fn: (r) => r[\"_field\"] == \"energy\")\n  |> group(columns: [\"_measurement\", \"_field\"])\n  |> sort(columns: [\"_time\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "kwatth",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 500,
+                        "color": "#EAB839"
+                      },
+                      {
+                        "value": 1000,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
                   }
                 },
                 "overrides": []
@@ -313,6 +928,97 @@
             "spec": {
               "x": 0,
               "y": 0,
+              "width": 8,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-3"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 8,
+              "y": 0,
+              "width": 8,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-4"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 16,
+              "y": 0,
+              "width": 8,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-5"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 4,
+              "width": 6,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-6"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 6,
+              "y": 4,
+              "width": 6,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-7"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 12,
+              "y": 4,
+              "width": 6,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-8"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 18,
+              "y": 4,
+              "width": 6,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-9"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 8,
               "width": 12,
               "height": 8,
               "element": {
@@ -325,7 +1031,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 12,
-              "y": 0,
+              "y": 8,
               "width": 12,
               "height": 8,
               "element": {
@@ -340,12 +1046,16 @@
     "links": [],
     "liveNow": false,
     "preload": false,
-    "tags": [],
+    "tags": [
+      "smart-factory",
+      "iot",
+      "v1"
+    ],
     "timeSettings": {
       "timezone": "browser",
-      "from": "2026-07-03T20:37:57.037Z",
-      "to": "2026-07-03T20:47:57.037Z",
-      "autoRefresh": "auto",
+      "from": "now-1h",
+      "to": "now",
+      "autoRefresh": "10s",
       "autoRefreshIntervals": [
         "5s",
         "10s",
@@ -361,7 +1071,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "Smart Factory Dashboard",
+    "title": "Smart Factory Dashboard - V1",
     "variables": [],
     "preferences": {
       "layout": {

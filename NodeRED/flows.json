@@ -1,30 +1,20 @@
 [
     {
-        "id": "f6f2187d.f17ca8",
+        "id": "1d99e55bf12431ab",
         "type": "tab",
         "label": "Flow 1",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "3cc11d24.ff01a2",
-        "type": "comment",
-        "z": "f6f2187d.f17ca8",
-        "name": "WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work",
-        "info": "\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.",
-        "x": 350,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "2013039083c90c28",
+        "id": "ac377be7d6e7688c",
         "type": "mqtt in",
-        "z": "f6f2187d.f17ca8",
+        "z": "1d99e55bf12431ab",
         "name": "",
         "topic": "smartfactory/machineA/data",
         "qos": "2",
         "datatype": "auto-detect",
-        "broker": "4523311ae0d59512",
+        "broker": "54ccd7e84c55f9e4",
         "nl": false,
         "rap": true,
         "rh": 0,
@@ -33,14 +23,14 @@
         "y": 340,
         "wires": [
             [
-                "72b86c6585441f21"
+                "297af4fd1366b150"
             ]
         ]
     },
     {
-        "id": "72b86c6585441f21",
+        "id": "297af4fd1366b150",
         "type": "json",
-        "z": "f6f2187d.f17ca8",
+        "z": "1d99e55bf12431ab",
         "name": "",
         "property": "payload",
         "action": "obj",
@@ -49,15 +39,165 @@
         "y": 340,
         "wires": [
             [
-                "8b51acf415484c53"
+                "c125852f849f727b"
             ]
         ]
     },
     {
-        "id": "b6e5f2150b572e92",
+        "id": "0935ebc45e8006e6",
+        "type": "function",
+        "z": "1d99e55bf12431ab",
+        "name": "function 1",
+        "func": "msg.measurement = \"telemetry\";\n\nmsg.payload = [\n    {\n        temperature: msg.payload.temperature,\n        humidity: msg.payload.humidity,\n        production: msg.payload.production,\n        energy: msg.payload.energy,\n        motor: msg.payload.motor ? 1 : 0\n    },\n    {\n        machine: msg.payload.machine,\n        status: msg.payload.status,\n        mode: msg.payload.mode,\n        line: \"Line_1\"\n    }\n];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 340,
+        "wires": [
+            [
+                "578e80d63b884750",
+                "efe6eeb96b11a498"
+            ]
+        ]
+    },
+    {
+        "id": "6b8093b1796ce9e2",
+        "type": "debug",
+        "z": "1d99e55bf12431ab",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "efe6eeb96b11a498",
+        "type": "debug",
+        "z": "1d99e55bf12431ab",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "c125852f849f727b",
+        "type": "rbe",
+        "z": "1d99e55bf12431ab",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": true,
+        "property": "payload",
+        "topi": "topic",
+        "x": 650,
+        "y": 340,
+        "wires": [
+            [
+                "0935ebc45e8006e6",
+                "6b8093b1796ce9e2"
+            ]
+        ]
+    },
+    {
+        "id": "720e69ab2245fba7",
+        "type": "inject",
+        "z": "1d99e55bf12431ab",
+        "name": "START",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "START",
+        "payloadType": "str",
+        "x": 210,
+        "y": 540,
+        "wires": [
+            [
+                "12680d1cbc0161c3"
+            ]
+        ]
+    },
+    {
+        "id": "12680d1cbc0161c3",
+        "type": "mqtt out",
+        "z": "1d99e55bf12431ab",
+        "name": "",
+        "topic": "smartfactory/machineA/cmd",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "54ccd7e84c55f9e4",
+        "x": 720,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "013295abea388c4e",
+        "type": "inject",
+        "z": "1d99e55bf12431ab",
+        "name": "STOP",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "STOP",
+        "payloadType": "str",
+        "x": 210,
+        "y": 580,
+        "wires": [
+            [
+                "12680d1cbc0161c3"
+            ]
+        ]
+    },
+    {
+        "id": "578e80d63b884750",
         "type": "influxdb out",
-        "z": "f6f2187d.f17ca8",
-        "influxdb": "46b1fe690577fadc",
+        "z": "1d99e55bf12431ab",
+        "influxdb": "93a365d55d6c2b62",
         "name": "Flux",
         "measurement": "",
         "precision": "",
@@ -72,81 +212,36 @@
         "wires": []
     },
     {
-        "id": "5473973a5248a208",
-        "type": "function",
-        "z": "f6f2187d.f17ca8",
-        "name": "function 1",
-        "func": "msg.measurement = \"telemetry\";\n\nmsg.payload = [\n    {\n        temperature: msg.payload.temperature,\n        humidity: msg.payload.humidity\n    },\n    {\n        machine: msg.payload.machine,\n        status: msg.payload.status,\n        line: \"Line_1\"\n    }\n];\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 860,
-        "y": 340,
+        "id": "8cc7782dfacf6923",
+        "type": "inject",
+        "z": "1d99e55bf12431ab",
+        "name": "RESET",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "RESET",
+        "payloadType": "str",
+        "x": 210,
+        "y": 620,
         "wires": [
             [
-                "b6e5f2150b572e92",
-                "b4e02f3bfd1c1af4"
+                "12680d1cbc0161c3"
             ]
         ]
     },
     {
-        "id": "967d53928471d90a",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 820,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "b4e02f3bfd1c1af4",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1040,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "8b51acf415484c53",
-        "type": "rbe",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "func": "rbe",
-        "gap": "",
-        "start": "",
-        "inout": "out",
-        "septopics": true,
-        "property": "payload",
-        "topi": "topic",
-        "x": 650,
-        "y": 340,
-        "wires": [
-            [
-                "5473973a5248a208",
-                "967d53928471d90a"
-            ]
-        ]
-    },
-    {
-        "id": "4523311ae0d59512",
+        "id": "54ccd7e84c55f9e4",
         "type": "mqtt-broker",
         "name": "SmartFactory 4.0",
         "broker": "broker.emqx.io",
@@ -177,7 +272,7 @@
         "sessionExpiry": ""
     },
     {
-        "id": "46b1fe690577fadc",
+        "id": "93a365d55d6c2b62",
         "type": "influxdb",
         "hostname": "127.0.0.1",
         "port": 8086,
@@ -192,7 +287,7 @@
         "rejectUnauthorized": true
     },
     {
-        "id": "000370a68a18c2d4",
+        "id": "02dff1234fca9a31",
         "type": "global-config",
         "env": [],
         "modules": {
