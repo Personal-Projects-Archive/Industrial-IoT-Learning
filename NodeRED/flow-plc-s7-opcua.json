@@ -1,0 +1,89 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3cc11d24.ff01a2",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work",
+        "info": "\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.",
+        "x": 350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "0f1b9cddb211e988",
+        "type": "s7 in",
+        "z": "f6f2187d.f17ca8",
+        "endpoint": "a3d8cda79ffe7cd6",
+        "mode": "all",
+        "variable": "",
+        "diff": true,
+        "name": "",
+        "x": 370,
+        "y": 420,
+        "wires": [
+            [
+                "f151a64eb995b801"
+            ]
+        ]
+    },
+    {
+        "id": "f151a64eb995b801",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "a3d8cda79ffe7cd6",
+        "type": "s7 endpoint",
+        "transport": "iso-on-tcp",
+        "address": "192.168.0.1",
+        "port": "102",
+        "rack": "0",
+        "slot": "1",
+        "localtsaphi": "01",
+        "localtsaplo": "00",
+        "remotetsaphi": "01",
+        "remotetsaplo": "00",
+        "connmode": "rack-slot",
+        "adapter": "",
+        "busaddr": 2,
+        "cycletime": 1000,
+        "timeout": 2000,
+        "name": "SmartFactoryPLC",
+        "vartable": [
+            {
+                "addr": "DB3,REAL0",
+                "name": "Temperature"
+            },
+            {
+                "addr": "DB3,REAL4",
+                "name": "Humidity"
+            }
+        ]
+    },
+    {
+        "id": "267481e84ee6061c",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-s7": "3.1.3"
+        }
+    }
+]
