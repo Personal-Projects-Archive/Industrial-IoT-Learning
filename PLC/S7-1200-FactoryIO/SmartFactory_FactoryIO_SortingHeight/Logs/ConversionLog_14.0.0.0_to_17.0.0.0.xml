@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type='text/xsl' href='ConversionLogFile.xsl'?>
+<LogFile projectName="PLC-Lab-Vorlage-1200-V14-PlcLabEdit" typeText="Typ" messageText="Meldung" timeText="Zeit">
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="24.04.2024 08:46:21">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Hochrüsten gestartet" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="24.04.2024 08:46:22" Debug="false">
+    <Text>Reorganization succeed!</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="24.04.2024 08:46:22">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="CheckRepair lost+found objects" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="24.04.2024 08:46:22" Debug="false">
+    <Text>No error is detected.</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="24.04.2024 08:46:23">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="CheckRepair missing bidirectional links" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="24.04.2024 08:46:23" Debug="false">
+    <Text>No error is detected.</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="24.04.2024 08:46:23">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="CheckRepair clear segment flags" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="24.04.2024 08:46:23" Debug="false">
+    <Text>No error is detected.</Text>
+  </Details>
+  <Details ServiceId="80" MessageId="30" Timestamp="24.04.2024 08:46:27" Debug="false">
+    <Text>Not invalidating fingerprints for protected object: RDST_DTL_SFC[SFC151]</Text>
+  </Details>
+  <Details ServiceId="80" MessageId="30" Timestamp="24.04.2024 08:46:27" Debug="false">
+    <Text>Not invalidating fingerprints for protected object: WRST_DTL_SFC[SFC156]</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="24.04.2024 08:46:28">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Die Querverweisinformationen werden konvertiert." />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="24.04.2024 08:46:28">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Die Querverweisinformationen wurden erfolgreich erstellt" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="24.04.2024 08:46:28">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Das Konvertieren der Querverweisinformationen ist beendet." />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="24.04.2024 08:46:28" Debug="false">
+    <Text>Package container 'Siemens.Simatic.Lang.S7BSW.V14.0.0.0.NonMandatory' was deleted</Text>
+  </Details>
+  <MessageCell ServiceId="Automation-ObjectFrame-Feedbacks" MessageId="ConversionInfoTabProjectSucceeded" MessageClass="Success" Timestamp="24.04.2024 08:46:29">
+    <Number ServiceNumber="80" MessageNumber="34" />
+    <Text FeedbackText="Projekt 'W:\temp_vorlage\PLC-Lab-Vorlage-1200-V14-PlcLabEdit\System\PEData.plf' wurde erfolgreich hochgerüstet und gespeichert als Projekt 'W:\temp_vorlage\PLC-Lab-Vorlage-1200-V14-PlcLabEdit_V17\System\PEData.plf'." />
+    <Help HelpId="-1" HelpFile="" />
+  </MessageCell>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="24.04.2024 08:46:29">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="FinalCheckRemainingErrors" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="24.04.2024 08:46:29" Debug="false">
+    <Text>No error is detected.</Text>
+  </Details>
+</LogFile>
