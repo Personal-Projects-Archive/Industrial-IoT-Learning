@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type='text/xsl' href='ConversionLogFile.xsl'?>
+<LogFile projectName="PLC-Lab-Edit-ProjectTemplate-1200_V20" typeText="Typ" messageText="Meldung" timeText="Zeit">
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:50:54">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Hochrüsten gestartet" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:50:54">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Projekt hochgerüstet von Version: 1400.104.501.1." />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="13.03.2025 16:50:57" Debug="false">
+    <Text>Reorganization succeed!</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:50:57">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="CheckRepair lost+found objects" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="13.03.2025 16:50:57" Debug="false">
+    <Text>No error is detected.</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:50:57">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="CheckRepair missing bidirectional links" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="13.03.2025 16:50:57" Debug="false">
+    <Text>No error is detected.</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:50:57">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="CheckRepair clear segment flags" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="13.03.2025 16:50:57" Debug="false">
+    <Text>No error is detected.</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:51:03">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="C0010:1015 Repair 'Comment' for DeviceDataObject 'S7-1200-Station_1'. Comment object had no culture infos." />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="13.03.2025 16:51:04" Debug="false">
+    <Text>Not invalidating fingerprints for protected object: RDST_DTL_SFC[SFC151]</Text>
+  </Details>
+  <Details ServiceId="80" MessageId="30" Timestamp="13.03.2025 16:51:04" Debug="false">
+    <Text>Not invalidating fingerprints for protected object: WRST_DTL_SFC[SFC156]</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:51:07">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Die Querverweisinformationen werden konvertiert." />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:51:07">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Die Querverweisinformationen wurden erfolgreich erstellt" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:51:07">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Das Konvertieren der Querverweisinformationen ist beendet." />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="13.03.2025 16:51:07" Debug="false">
+    <Text>Package container 'Siemens.Simatic.Lang.S7BSW.V14.0.0.0.NonMandatory' was deleted</Text>
+  </Details>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:51:07">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="Projekt hochgerüstet auf Version: 2000.1.501.2." />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <MessageCell ServiceId="Automation-ObjectFrame-Feedbacks" MessageId="ConversionInfoTabProjectSucceeded" MessageClass="Success" Timestamp="13.03.2025 16:51:07">
+    <Number ServiceNumber="80" MessageNumber="34" />
+    <Text FeedbackText="Projekt 'C:\Users\tw\Documents\Automatisierung\PLC-Lab-Editor\V14\PLC-Lab-Edit-ProjectTemplate-1200\System\PEData.plf' wurde erfolgreich hochgerüstet und gespeichert als Projekt 'C:\Users\tw\Documents\Automatisierung\PLC-Lab-Editor\V14\PLC-Lab-Edit-ProjectTemplate-1200_V20\System\PEData.plf'." />
+    <Help HelpId="-1" HelpFile="" />
+  </MessageCell>
+  <MessageCell ServiceId="80" MessageId="30" MessageClass="Information" Timestamp="13.03.2025 16:51:08">
+    <Number ServiceNumber="80" MessageNumber="30" />
+    <Text FeedbackText="FinalCheckRemainingErrors" />
+    <Help HelpId="-1" />
+  </MessageCell>
+  <Details ServiceId="80" MessageId="30" Timestamp="13.03.2025 16:51:08" Debug="false">
+    <Text>No error is detected.</Text>
+  </Details>
+</LogFile>
